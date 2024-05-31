@@ -51,3 +51,8 @@ print("\n")
 
 posicoes_memoria_acessar_3 = [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_3)
+
+# endereços que sempre mapeiam para a mesma posiçao na cache
+print("\nConfiguração com Mesma Posição na Cache:")
+posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
