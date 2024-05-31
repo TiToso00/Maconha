@@ -60,73 +60,85 @@ print("\nConfiguração com Mesma Posição na Cache:")
 posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
 
-class CacheMapeamentoAssociativoConjunto:
+
+class CacheAssociativoPorConjunto:
     def __init__(self, tamanho_cache, tamanho_conjunto):
         self.tamanho_cache = tamanho_cache
         self.tamanho_conjunto = tamanho_conjunto
-        self.cache = [[] for _ in range(tamanho_cache // tamanho_conjunto)]
-        self.lru_counter = 0
+        self.num_conjuntos = tamanho_cache // tamanho_conjunto
+        self.cache = [[-1] * tamanho_conjunto for _ in range(self.num_conjuntos)]
+        self.lru = [0] * self.num_conjuntos  # Inicializa LRU para cada conjunto como 0
+        self.hits = 0
+        self.misses = 0
 
-    def inicializar_cache(self):
-        self.cache = [[] for _ in range(self.tamanho_cache // self.tamanho_conjunto)]
-        self.lru_counter = 0
+    def acessar_endereco(self, endereco):
+        conjunto_index = (endereco // self.tamanho_conjunto) % self.num_conjuntos
+        conjunto = self.cache[conjunto_index]
+
+        if endereco in conjunto:
+            self.hits += 1
+            print(f"Hit: Acessando endereço {endereco}")
+        else:
+            self.misses += 1
+            if -1 in conjunto:
+                # Ainda há espaço no conjunto, adiciona o bloco
+                index = conjunto.index(-1)
+                conjunto[index] = endereco
+            else:
+                # O conjunto está cheio, substitui usando LRU
+                lru_index = self.lru[conjunto_index]
+                conjunto[lru_index] = endereco
+
+            print(f"Miss: Acessando endereço {endereco}")
+
+        self.atualizar_lru(conjunto_index, endereco)
+        self.imprimir_cache()
+
+    def atualizar_lru(self, conjunto_index, endereco):
+        conjunto = self.cache[conjunto_index]
+        if -1 not in conjunto:
+            # O conjunto está cheio, atualiza o LRU
+            if endereco in conjunto:
+                self.lru[conjunto_index] = conjunto.index(endereco)
+            else:
+                # Encontra o bloco mais antigo no conjunto
+                self.lru[conjunto_index] = conjunto.index(min(conjunto))
 
     def imprimir_cache(self):
-        print("Tamanho da Cache:", self.tamanho_cache)
-        print("Tamanho do Conjunto:", self.tamanho_conjunto)
-        print("Conjuntos - Conteúdo")
-        for conjunto, conteudo in enumerate(self.cache):
-            print(f"Conjunto {conjunto}:", conteudo)
-
-    def mapeamento_associativo_conjunto(self, posicoes_memoria_acessar):
-        hits = 0  # Contador de hits para esta execução
-        misses = 0  # Contador de misses para esta execução
-
-        print("Inicializando Cache...")
-        self.inicializar_cache()
-        print("Situação inicial da memória cache:")
-        self.imprimir_cache()
-        print("\nRealizando mapeamento associativo por conjunto...")
-
-        for pos_memoria in posicoes_memoria_acessar:
-            conjunto = pos_memoria % (self.tamanho_cache // self.tamanho_conjunto)
-            found = False
-            for i, bloco in enumerate(self.cache[conjunto]):
-                if bloco[0] == pos_memoria:  # Verifica se o endereço está no conjunto
-                    hits += 1
-                    print(f"Hit: Acessando endereço {pos_memoria}")
-                    bloco[1] = self.lru_counter  # Atualiza o contador LRU
-                    found = True
-                    break
-            if not found:
-                misses += 1
-                print(f"Miss: Acessando endereço {pos_memoria}")
-                if len(self.cache[conjunto]) < self.tamanho_conjunto:
-                    self.cache[conjunto].append([pos_memoria, self.lru_counter])  # Adiciona novo bloco ao conjunto
+        print("Estado atual da cache:")
+        for i, conjunto in enumerate(self.cache):
+            lru_index = self.lru[i]
+            for pos, bloco in enumerate(conjunto):
+                if pos == lru_index and -1 not in conjunto:
+                    print(f"Conjunto {i} - Bloco {pos}: {bloco} (LRU)")
                 else:
-                    # Encontra o bloco LRU no conjunto e o substitui
-                    lru_index = min(range(len(self.cache[conjunto])), key=lambda x: self.cache[conjunto][x][1])
-                    self.cache[conjunto][lru_index] = [pos_memoria, self.lru_counter]
-            self.lru_counter += 1
+                    print(f"Conjunto {i} - Bloco {pos}: {bloco}")
+        print()
 
-            print("Memória cache atualizada:")
-            self.imprimir_cache()
+    def imprimir_hits_misses(self):
+        print(f"Hits: {self.hits}")
+        print(f"Misses: {self.misses}")
 
-        print("\nResumo:")
-        print("Total de posições de memórias acessadas:", len(posicoes_memoria_acessar))
-        print("Total de hits:", hits)
-        print("Total de misses:", misses)
-        print("Taxa de cache hit:", hits / len(posicoes_memoria_acessar))
+# Exemplo de uso:
+print("Mapeamento Associativo por Conjunto:")
+tamanho_cache = 16
+tamanho_conjunto = 4
+cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
 
-        # Teste de Mapeamento Associativo por Conjunto
-print("Mapeamento Associativo por Conjunto com 4 blocos por conjunto:")
-cache_conjunto_4 = CacheMapeamentoAssociativoConjunto(16, 4)
-posicoes_memoria_acessar_4 = [0, 1, 2, 3, 4, 5, 6, 7]
-cache_conjunto_4.mapeamento_associativo_conjunto(posicoes_memoria_acessar_4)
-print("\n")
+# Sequência de endereços a serem acessados
+posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3]
+for endereco in posicoes_memoria_acessar_1:
+    cache.acessar_endereco(endereco)
 
-print("Mapeamento Associativo por Conjunto com 8 blocos por conjunto:")
-cache_conjunto_8 = CacheMapeamentoAssociativoConjunto(16, 8)
-posicoes_memoria_acessar_8 = [0, 1, 2, 3, 4, 5, 6, 7]
-cache_conjunto_8.mapeamento_associativo_conjunto(posicoes_memoria_acessar_8)
+print("\nOutro exemplo com 8 blocos por conjunto:")
 
+tamanho_conjunto = 8
+cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
+
+# Sequência de endereços a serem acessados
+posicoes_memoria_acessar_2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3]
+for endereco in posicoes_memoria_acessar_2:
+    cache.acessar_endereco(endereco)
+
+
+# Exemplo 6b
