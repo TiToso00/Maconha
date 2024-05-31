@@ -41,26 +41,8 @@ class CacheMapeamentoDireto:
         print("Taxa de cache hit:", hits / len(posicoes_memoria_acessar))
 
 
-# Teste de Mapeamento Direto
-print("Mapeamento Direto:")
-cache_direto = CacheMapeamentoDireto(5)
-posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6]
-cache_direto.mapeamento_direto(posicoes_memoria_acessar_1)
-print("\n")
 
-posicoes_memoria_acessar_2 = [0, 1, 2, 2, 22, 32, 42, 20, 1, 10, 11, 12, 13]
-cache_direto.mapeamento_direto(posicoes_memoria_acessar_2)
-print("\n")
-
-posicoes_memoria_acessar_3 = [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
-cache_direto.mapeamento_direto(posicoes_memoria_acessar_3)
-
-# Endereços que sempre mapeiam para a mesma posição na cache
-print("\nConfiguração com Mesma Posição na Cache:")
-posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
-cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
-
-
+        
 class CacheAssociativoPorConjunto:
     def __init__(self, tamanho_cache, tamanho_conjunto):
         self.tamanho_cache = tamanho_cache
@@ -119,6 +101,26 @@ class CacheAssociativoPorConjunto:
         print(f"Hits: {self.hits}")
         print(f"Misses: {self.misses}")
 
+
+# Teste de Mapeamento Direto
+print("Mapeamento Direto:")
+cache_direto = CacheMapeamentoDireto(5)
+posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_1)
+print("\n")
+
+posicoes_memoria_acessar_2 = [0, 1, 2, 2, 22, 32, 42, 20, 1, 10, 11, 12, 13]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_2)
+print("\n")
+
+posicoes_memoria_acessar_3 = [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_3)
+
+# Endereços que sempre mapeiam para a mesma posição na cache
+print("\nConfiguração com Mesma Posição na Cache:")
+posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
+
 # Exemplo de uso:
 print("Mapeamento Associativo por Conjunto:")
 tamanho_cache = 16
@@ -126,19 +128,18 @@ tamanho_conjunto = 4
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
 
 # Sequência de endereços a serem acessados
-posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3]
+posicoes_memoria_acessar_1 = [0, 1, 19, 23, 2, 7, 52, 5, 7, 8, 19, 10, 11, 21, 13, 19, 5, 0, 10, 4]
 for endereco in posicoes_memoria_acessar_1:
     cache.acessar_endereco(endereco)
-
-print("\nOutro exemplo com 8 blocos por conjunto:")
 
 tamanho_conjunto = 8
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
 
 # Sequência de endereços a serem acessados
-posicoes_memoria_acessar_2 = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 0, 1, 2, 3]
+posicoes_memoria_acessar_2 = [0, 4, 2, 8, 7, 24, 6, 9, 34, 23, 5, 11, 18, 13, 44, 15, 6, 3, 7, 28]
 for endereco in posicoes_memoria_acessar_2:
     cache.acessar_endereco(endereco)
 
 
 # Exemplo 6b
+tamanho_cache = 8
