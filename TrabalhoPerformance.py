@@ -108,29 +108,30 @@ class CacheAssociativoPorConjunto:
 print("Mapeamento Direto:")
 cache_direto = CacheMapeamentoDireto(5)
 
+print("Exemplo 4")
 posicoes_memoria_acessar = [0, 19, 2, 1, 23, 4, 17, 6]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar)
 print("\n")
 
-
+print("Exemplo 5a")
 posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_1)
 print("\n")
-
+print("Exemplo 5a")
 posicoes_memoria_acessar_2 = [0, 1, 2, 2, 22, 32, 42, 20, 1, 10, 11, 12, 13]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_2)
 print("\n")
-
+print("Exemplo 5b")
 posicoes_memoria_acessar_3 = [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_3)
 print("\n")
 
 # Endereços que sempre mapeiam para a mesma posição na cache
-print("\nConfiguração com Mesma Posição na Cache:")
+print("\nConfiguração com Mesma Posição na Cache (5c):")
 posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
 
-print("Mapeamento Associativo por Conjunto:")
+print("Mapeamento Associativo por Conjunto (6a):")
 tamanho_cache = 16
 tamanho_conjunto = 4
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
@@ -140,7 +141,7 @@ for endereco in posicoes_memoria_acessar_1:
 cache.imprimir_hits_misses()
 print("\n")
 
-print("\n Outro exemplo:")
+print("\n Outro exemplo (6a):")
 
 tamanho_conjunto = 8
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
