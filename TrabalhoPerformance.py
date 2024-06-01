@@ -33,6 +33,7 @@ class CacheMapeamentoDireto:
                 print(f"Miss: Acessando endereço {pos_memoria}")
             print("Memória cache atualizada:")
             self.imprimir_cache()
+            print("\n")
 
         print("\nResumo:")
         print("Total de posições de memórias acessadas:", len(posicoes_memoria_acessar))
@@ -98,6 +99,7 @@ class CacheAssociativoPorConjunto:
         print()
 
     def imprimir_hits_misses(self):
+        print("Resumo:")
         print(f"Hits: {self.hits}")
         print(f"Misses: {self.misses}")
 
@@ -115,31 +117,46 @@ print("\n")
 
 posicoes_memoria_acessar_3 = [1, 6, 1, 11, 1, 16, 1, 21, 1, 26]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_3)
+print("\n")
 
 # Endereços que sempre mapeiam para a mesma posição na cache
 print("\nConfiguração com Mesma Posição na Cache:")
 posicoes_memoria_acessar_mesma_posicao = [0, 5, 10, 15, 20, 25]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_mesma_posicao)
 
-# Exemplo de uso:
 print("Mapeamento Associativo por Conjunto:")
 tamanho_cache = 16
 tamanho_conjunto = 4
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
-
-# Sequência de endereços a serem acessados
-posicoes_memoria_acessar_1 = [0, 1, 19, 23, 2, 7, 52, 5, 7, 8, 19, 10, 11, 21, 13, 19, 5, 0, 10, 4]
+posicoes_memoria_acessar_1 = [0, 1, 19, 23, 2, 7, 52, 5, 7, 8, 19, 10, 11, 21, 13, 19, 5]
 for endereco in posicoes_memoria_acessar_1:
     cache.acessar_endereco(endereco)
+cache.imprimir_hits_misses()
+print("\n")
+
+print("\n Outro exemplo:")
 
 tamanho_conjunto = 8
 cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
-
-# Sequência de endereços a serem acessados
-posicoes_memoria_acessar_2 = [0, 4, 2, 8, 7, 24, 6, 9, 34, 23, 5, 11, 18, 13, 44, 15, 6, 3, 7, 28]
+posicoes_memoria_acessar_2 = [0, 4, 2, 8, 7, 24, 6, 9, 34, 23, 5, 11, 18, 13, 44, 15, 6]
 for endereco in posicoes_memoria_acessar_2:
     cache.acessar_endereco(endereco)
-
+cache.imprimir_hits_misses()
+print("\n")
 
 # Exemplo 6b
+print("Mapeamento Direto (6b):")
+cache_direto=CacheMapeamentoDireto(8)
+posicoes_memoria_acessar_1 = [2,8,3,22,16,1,28,7,15,44,5,1,]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar_1)
+print("\n")
+
+print("Mapeamento Associativo por Conjunto (6b):")
 tamanho_cache = 8
+tamanho_conjunto = 2
+cache = CacheAssociativoPorConjunto(tamanho_cache, tamanho_conjunto)
+
+posicoes_memoria_acessar_1 = [2,8,3,22,16,1,28,7,15,44,5,1,]
+for endereco in posicoes_memoria_acessar_1:
+    cache.acessar_endereco(endereco)
+cache.imprimir_hits_misses()
