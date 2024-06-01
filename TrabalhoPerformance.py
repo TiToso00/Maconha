@@ -107,6 +107,12 @@ class CacheAssociativoPorConjunto:
 # Teste de Mapeamento Direto
 print("Mapeamento Direto:")
 cache_direto = CacheMapeamentoDireto(5)
+
+posicoes_memoria_acessar = [0, 19, 2, 1, 23, 4, 17, 6]
+cache_direto.mapeamento_direto(posicoes_memoria_acessar)
+print("\n")
+
+
 posicoes_memoria_acessar_1 = [0, 1, 2, 3, 1, 4, 5, 6]
 cache_direto.mapeamento_direto(posicoes_memoria_acessar_1)
 print("\n")
